@@ -46,10 +46,10 @@ const Navbar = props => {
           <li className="nav-item">
             <NavLink
               className="nav-link"
-              to="/github-card"
+              to="/covid-card"
               activeClassName="active"
             >
-              Github-Cards
+              Covid19-Cards
             </NavLink>
           </li>
         </ul>

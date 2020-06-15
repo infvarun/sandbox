@@ -6,22 +6,100 @@ class RequestForm extends React.Component {
     super(props);
 
     this.state = {
-      userInput: ""
+      userInput: "",
+      yesterday: ""
     };
   }
 
+  /**
+   * Get yesterdays date when component mounts
+   */
+  componentDidMount() {
+    let today = new Date();
+    let yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    let dd = yesterday.getDate();
+    let mm = yesterday.getMonth() + 1; //January is 0!
+
+    var yyyy = yesterday.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+    yesterday = yyyy + "-" + mm + "-" + dd;
+    this.setState({ yesterday: yesterday });
+  }
+
+  /**
+   * Handle User Input in input box
+   */
   handleChange = event => {
     this.setState({ userInput: event.target.value });
   };
 
+  /**
+   * Get Country Code for country name
+   */
+  getCountryCode = async countryName => {
+    try {
+      const res = await Axios.get(
+        `https://restcountries-v1.p.rapidapi.com/name/${countryName}`,
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "restcountries-v1.p.rapidapi.com",
+            "x-rapidapi-key":
+              "i92sxPs04tmshFcoIc4T9X9A8zgPp1j91abjsnoAC9L2R0SCpz"
+          }
+        }
+      );
+
+      console.log("Country info", res.data);
+      let countryCode = "";
+      res.data.forEach(d => {
+        if (d.name === countryName) {
+          countryCode = d.alpha2Code;
+        }
+      });
+
+      return countryCode;
+    } catch (err) {
+      /*swallow this*/
+    }
+  };
+
+  /**
+   * Handle form submit
+   */
   handleSubmit = async event => {
     event.preventDefault();
     console.log(this.state.userInput);
 
-    const resp = await Axios.get(
-      `https://api.github.com/users/${this.state.userName}`
-    );
-    console.log(resp.data);
+    try {
+      const res = await Axios.get(
+        `https://covid-19-data.p.rapidapi.com/report/country/name?date-format=YYYY-MM-DD&format=json&date=${
+          this.state.yesterday
+        }&name=${this.state.userInput}`,
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+            "x-rapidapi-key":
+              "i92sxPs04tmshFcoIc4T9X9A8zgPp1j91abjsnoAC9L2R0SCpz"
+          }
+        }
+      );
+
+      const countrycode = await this.getCountryCode(res.data[0].country);
+      //console.log(res.data[0].provinces[0].active);
+      // Invoke parent (CovidApp) method sent as prop to set data
+      this.props.onSubmit(res.data[0], countrycode);
+    } catch (err) {
+      console.error("Country Not Found: ", err);
+    }
   };
 
   render() {
@@ -36,7 +114,7 @@ class RequestForm extends React.Component {
                   type="text"
                   className="form-control"
                   id="username"
-                  placeholder="Github Username"
+                  placeholder="Covid Username"
                   value={this.state.userInput}
                   onChange={this.handleChange}
                   required

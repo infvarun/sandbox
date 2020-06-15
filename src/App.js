@@ -4,7 +4,7 @@ import Counter from "./components/counter.component";
 import Navbar from "./components/navbar.component";
 import { Switch, Route, Redirect } from "react-router-dom";
 import CounterCards from "./components/counter-cards.component";
-import GithubApp from "./components/github-app.component";
+import CovidApp from "./components/covid-app.component";
 
 function App() {
   const getCounter = (operator, operand, title, size) => {
@@ -34,7 +34,7 @@ function App() {
 
             <Route path="/counter-card" component={CounterCards} />
 
-            <Route path="/github-card" component={GithubApp} />
+            <Route path="/covid-card" component={CovidApp} />
             <Redirect to="/home" from="/" />
           </Switch>
         </div>
