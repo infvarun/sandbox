@@ -76,7 +76,7 @@ class RequestForm extends React.Component {
    */
   handleSubmit = async event => {
     event.preventDefault();
-    console.log(this.state.userInput);
+    //console.log(this.state.userInput);
 
     try {
       const res = await Axios.get(
@@ -94,7 +94,7 @@ class RequestForm extends React.Component {
       );
 
       const countrycode = await this.getCountryCode(res.data[0].country);
-      //console.log(res.data[0].provinces[0].active);
+      //console.log("COVID API fetched for: " + this.state.yesterday, res);
       // Invoke parent (CovidApp) method sent as prop to set data
       this.props.onSubmit(res.data[0], countrycode);
     } catch (err) {
@@ -109,12 +109,14 @@ class RequestForm extends React.Component {
           <div className="card-body">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
-                <label htmlFor="username">Add new user to the list</label>
+                <label htmlFor="username">
+                  Provide Country Name to Add card
+                </label>
                 <input
                   type="text"
                   className="form-control"
                   id="username"
-                  placeholder="Covid Username"
+                  placeholder="See Covid 19 Update for?"
                   value={this.state.userInput}
                   onChange={this.handleChange}
                   required

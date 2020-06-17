@@ -2,9 +2,9 @@ export default (testData = [
   {
     country: "India",
     countrycode: "IN",
-    confirmed: 300000,
-    active: 140000,
+    confirmed: 354065,
+    active: 155227,
     deaths: 8000,
-    recovered: 150000
+    recovered: 186935
   }
 ]);
