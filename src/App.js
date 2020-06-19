@@ -5,6 +5,7 @@ import Navbar from "./components/navbar.component";
 import { Switch, Route, Redirect } from "react-router-dom";
 import CounterCards from "./components/counter-cards.component";
 import CovidApp from "./components/covid-app.component";
+import StarMatch from "./components/star-game/star-game.component";
 
 function App() {
   const getCounter = (operator, operand, title, size) => {
@@ -35,6 +36,9 @@ function App() {
             <Route path="/counter-card" component={CounterCards} />
 
             <Route path="/covid-card" component={CovidApp} />
+
+            <Route path="/star-match" component={StarMatch} />
+
             <Redirect to="/home" from="/" />
           </Switch>
         </div>

@@ -52,6 +52,15 @@ const Navbar = props => {
               Covid19-Cards
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              className="nav-link"
+              to="/star-match"
+              activeClassName="active"
+            >
+              Star-Match-Game
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
